@@ -1,3 +1,3 @@
-# jkl-game
-属于河财大自己的五条悟，The Five Wu's Belonging to Henan University of Finance and Economics
-经典贪吃蛇游戏，游戏难度随着得分提高
+# jkl-tanchishe
+属于河财大自己的五条悟，
+Using Vscode and native JS to write code for the classic Snake game, the difficulty of the game increases with the score
