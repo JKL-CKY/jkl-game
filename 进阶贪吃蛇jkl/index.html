@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进阶贪吃蛇</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html,
+        body {
+            height: 100%;
+        }
+        body {
+            background: url(./背景.png) no-repeat;
+            background-size: cover;
+            overflow: hidden;
+        }
+        .btnbox {
+            margin: 50px auto;
+            width: 600px;
+            height: 200px;
+            display: flex;
+            /* 水平方向排列 */
+            flex-direction: row;
+            /* 主轴方向上均匀分布 */
+            justify-content: space-evenly
+        }
+        .score {
+            color: red;
+            font-weight: bold;
+            font-size: 20px;
+            text-align: center;
+            line-height: 40px;
+        }
+        .btnbox button {
+            width: 100px;
+            height: 40px;
+            font-size: 18px;
+            background-color: orange;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.3);
+            user-select: none;
+
+        }
+        .btnbox button:hover {
+            cursor: pointer;
+            color: #ff4e00;
+        }
+        .map {
+            width: 1000px;
+            height: 600px;
+            background: url(./map.jpg);
+            position: absolute;
+            top: 100px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            box-shadow: 0px 0px 100px 0px black inset 0px 0px 30px 0px white;
+        }
+
+        .map>div {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: 0px 0px 10px yellow;
+        }
+
+        /* 蛇头 */
+        .head {
+            background: radial-gradient(#ffc000, #ff4e00);
+        }
+
+        /* 蛇身 */
+        .body {
+            background: radial-gradient(#fff369, #fa791a);
+        }
+
+        .food {
+            background: radial-gradient(#a7fa64, #4f8524);
+            animation: foodAniamte 0.5s linear infinite;
+
+        }
+
+        @keyframes foodAniamte {
+            0% {
+                box-shadow: 0px 0px 10px white;
+            }
+
+            50% {
+                box-shadow: 0px 0px 50px yellowgreen;
+            }
+
+            100% {
+                box-shadow: 0px 0px 10px white;
+            }
+        }
+
+        audio {
+            display: none;
+        }
+
+        .panbg {
+            width: 480px;
+            height: 320px;
+            background: url(./gameover.png) no-repeat;
+            background-position: center;
+            position: fixed;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .endClass{
+            background: radial-gradient(#a7fa64, #4f8524);
+            animation: foodAniamte 0.5s linear infinite;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="panbg"></div>
+    <div class="btnbox">
+        <div>
+            <button class="start">开始</button>
+            <button class="pause">暂停</button>
+            <button class="end">结束</button>
+        </div>
+        <div class="score">
+            得分: <span>0</span>
+        </div>
+    </div>
+    <div class="map">
+
+    </div>
+
+    <audio id="myAudio" src="./7895.wav" controls loop></audio>
+    <script src="./food.js"></script>
+    <script src="./snake.js"></script>
+    <script src="./game.js"></script>
+    <script>
+        //const food = new Food(".map")
+        //const snake = new Snake(".map")
+        const game = new Game(".map", ".score span", ".panbg")
+        //拿到按钮进行操作
+
+        const audio = document.getElementById('myAudio');
+        const start = document.querySelector('.start')
+        const pause = document.querySelector('.pause')
+        const end = document.querySelector('.end')
+
+
+        start.addEventListener('click', function () {
+            game.start()
+            audio.play()
+        })
+        pause.addEventListener('click', function () {
+            game.pause()
+        })
+        end.addEventListener('click', function () {
+            game.restart()
+            audio.pause()
+        })
+        //键盘操作
+        document.onkeydown = function (e) {
+            switch (e.keyCode) {
+                case 37:
+                    if (game.snake.direction === "right") {
+                        e.preventDefault(); 
+                        return; 
+                    }
+                    game.change("left")
+                    break;
+                case 38:
+                     if (game.snake.direction === "bottom") {
+                        e.preventDefault(); 
+                        return; 
+                    }
+                    game.change("top")
+                    break;
+                case 39:
+                    if (game.snake.direction === "left") {
+                        e.preventDefault(); 
+                        return; 
+                    }
+                    game.change("right")
+                    break;
+                case 40:
+                    if (game.snake.direction === "top") {
+                        e.preventDefault(); 
+                        return; 
+                    }
+                    game.change("bottom")
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+    </script>
+</body>
+
+</html>
